@@ -7,13 +7,12 @@
 
   outputs = { self, nixpkgs }:
     let
-    packages.x86_64-linux.hello = nixpkgs.legacyPackages.x86_64-linux.hello;
-
-    packages.x86_64-linux.default = self.packages.x86_64-linux.hello;
       system = "x86_64-linux";
       pkgs = import nixpkgs { inherit system; };
     in
     {
+    packages.x86_64-darwin.default = build_for "x86_64-darwin";
+      packages.x86_64-linux.default = build_for "x86_64-linux";
       packages = {
         myPackage = pkgs.hello;
       };
