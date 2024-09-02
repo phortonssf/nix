@@ -29,8 +29,8 @@
       # A Nixpkgs overlay.
       overlay = final: prev: {
 
-       new = with final; stdenv.mkDerivation rec {
-          name = "hello-${version}";
+       hello = with final; stdenv.mkDerivation rec {
+          name = "test-${version}";
 
           unpackPhase = ":";
 
