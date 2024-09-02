@@ -38,7 +38,7 @@
             ''
               cat > hello <<EOF
               #! $SHELL
-              echo "Hello Pedro!"
+              echo "Hello Nixers!"
               EOF
               chmod +x hello
             '';
