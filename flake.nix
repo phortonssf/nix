@@ -21,11 +21,11 @@
         # `eachDefaultSystem` transforms the input, our output set
         # now simply has `packages.default` which gets turned into
         # `packages.${system}.default` (for each system)
-      #  packages.default = derivation {
-      #    inherit system name src;
-      #    builder = with pkgs; "${bash}/bin/bash";
-      #    args = [ "-c" "echo foo > $out" ];
-      #  };
+        packages.bash = derivation {
+          inherit system name src;
+          builder = with pkgs; "${bash}/bin/bash";
+          args = [ "-c" "echo foo > $out" ];
+        };
   # nix build .#hello
         packages.hello = pkgs.hello;
         #packages.test = pkgs.hello;
