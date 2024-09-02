@@ -29,24 +29,24 @@
       # A Nixpkgs overlay.
       overlay = final: prev: {
 
-        hello = with final; stdenv.mkDerivation rec {
-          name = "hello-${version}";
+        pedro = with final; stdenv.mkDerivation rec {
+          name = "pedro-${version}";
 
           unpackPhase = ":";
 
           buildPhase =
             ''
-              cat > hello <<EOF
+              cat > pedro <<EOF
               #! $SHELL
               echo "Hello Nixers!"
               EOF
-              chmod +x hello
+              chmod +x pedro
             '';
 
           installPhase =
             ''
               mkdir -p $out/bin
-              cp hello $out/bin/
+              cp pedro $out/bin/
             '';
         };
 
@@ -55,21 +55,21 @@
       # Provide some binary packages for selected system types.
       packages = forAllSystems (system:
         {
-          inherit (nixpkgsFor.${system}) hello;
+          inherit (nixpkgsFor.${system}) pedro;
         });
 
       # The default package for 'nix build'. This makes sense if the
       # flake provides only one package or there is a clear "main"
       # package.
-      defaultPackage = forAllSystems (system: self.packages.${system}.hello);
+      defaultPackage = forAllSystems (system: self.packages.${system}.pedro);
 
       # A NixOS module, if applicable (e.g. if the package provides a system service).
-      nixosModules.hello =
+      nixosModules.pedro =
         { pkgs, ... }:
         {
           nixpkgs.overlays = [ self.overlay ];
 
-          environment.systemPackages = [ pkgs.hello ];
+          environment.systemPackages = [ pkgs.pedro ];
 
           #systemd.services = { ... };
         };
@@ -80,19 +80,19 @@
           with nixpkgsFor.${system};
 
           {
-            inherit (self.packages.${system}) hello;
+            inherit (self.packages.${system}) pedro;
 
             # Additional tests, if applicable.
             test = stdenv.mkDerivation {
-              name = "hello-test-${version}";
+              name = "pedro-test-${version}";
 
-              buildInputs = [ hello ];
+              buildInputs = [ pedro ];
 
               unpackPhase = "true";
 
               buildPhase = ''
                 echo 'running some integration tests'
-                [[ $(hello) = 'Hello Nixers!' ]]
+                [[ $(pedro) = 'Hello Nixers!' ]]
               '';
 
               installPhase = "mkdir -p $out";
@@ -109,7 +109,7 @@
               makeTest {
                 nodes = {
                   client = { ... }: {
-                    imports = [ self.nixosModules.hello ];
+                    imports = [ self.nixosModules.pedro ];
                   };
                 };
 
@@ -117,7 +117,7 @@
                   ''
                     start_all()
                     client.wait_for_unit("multi-user.target")
-                    client.succeed("hello")
+                    client.succeed("pedro")
                   '';
               };
           }
